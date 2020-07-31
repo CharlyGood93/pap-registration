@@ -1,0 +1,23 @@
+<ion-content fullscreen>
+  <ion-item class="vertical-space">
+    <h1 class="center">Iniciar sesi&oacute;n</h1>
+  </ion-item>
+  <ion-list lines="full" class="ion-padding">
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input type="email" placeholder="Ingresa tu email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Contrase&ntilde;a</ion-label>
+      <ion-input type="password" placeholder="Ingresa tu contrase&ntilde;a" [(ngModel)]="password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <div class="ion-padding">
+    <ion-button (click)="login()" class="ion-no-padding" expand="block" shape="round" color="primary">
+      Iniciar sesi&oacute;n
+    </ion-button>
+    <ion-button (click)="signup()" class="ion-no-padding" expand="block" fill="clear" color="primary">
+      &#191;No tienes una cuenta&#63; Registrate aqu&iacute;
+    </ion-button>
+  </div>
+</ion-content>
