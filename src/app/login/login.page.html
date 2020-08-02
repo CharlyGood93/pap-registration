@@ -2,22 +2,36 @@
   <ion-item class="vertical-space">
     <h1 class="center">Iniciar sesi&oacute;n</h1>
   </ion-item>
-  <ion-list lines="full" class="ion-padding">
-    <ion-item>
-      <ion-label position="stacked">Email</ion-label>
-      <ion-input type="email" placeholder="Ingresa tu email" [(ngModel)]="email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Contrase&ntilde;a</ion-label>
-      <ion-input type="password" placeholder="Ingresa tu contrase&ntilde;a" [(ngModel)]="password"></ion-input>
-    </ion-item>
-  </ion-list>
-  <div class="ion-padding">
-    <ion-button (click)="login()" class="ion-no-padding" expand="block" shape="round" color="primary">
-      Iniciar sesi&oacute;n
-    </ion-button>
-    <ion-button (click)="signup()" class="ion-no-padding" expand="block" fill="clear" color="primary">
-      &#191;No tienes una cuenta&#63; Registrate aqu&iacute;
-    </ion-button>
-  </div>
+  <form [formGroup]="formSigninSignup" novalidate>
+    <ion-list lines="full" class="ion-padding">
+      <ion-item>
+        <ion-label position="stacked">
+          Email
+          <ion-text *ngIf="formInputIsRequired('email')" color="danger">&#42;</ion-text>
+        </ion-label>
+        <ion-input type="email" placeholder="Ingresa tu email" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">
+          Contrase&ntilde;a
+          <ion-text *ngIf="formInputIsRequired('password')" color="danger">&#42;</ion-text>
+        </ion-label>
+        <ion-input type="password" placeholder="Ingresa tu contrase&ntilde;a" formControlName="password"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button [disabled]="!formSigninSignup.valid" (click)="signinSignup(formSigninSignup, 'signin')" type="submit" class="ion-no-padding" expand="block" shape="round" color="primary">
+            Iniciar sesi&oacute;n
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button [disabled]="!formSigninSignup.valid" (click)="signinSignup(formSigninSignup, 'signup')" type="submit" class="ion-no-padding" expand="block" shape="round" color="secondary">
+            Crear cuenta 
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

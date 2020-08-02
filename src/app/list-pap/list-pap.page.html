@@ -1,18 +1,16 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Lista de PaP</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()" fill="clear" slot="icon-only">
         <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </ion-toolbar>
-  <ion-toolbar color="primary">
-    <ion-searchbar></ion-searchbar>
+    <ion-title>Lista de PaP</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen>
+  <ion-searchbar (ionChange)="search($event)"></ion-searchbar>
   <ion-list lines="full">
     <ion-item-sliding>
       <ion-item>
@@ -23,12 +21,6 @@
         </ion-label>
       </ion-item>
       <ion-item-options>
-        <ion-item-option color="primary" (click)="showDetails()" slot="icon-only">
-          <ion-icon name="glasses-outline"></ion-icon>
-        </ion-item-option>
-        <ion-item-option color="secondary" (click)="editRegistry()" slot="icon-only">
-          <ion-icon name="create-outline"></ion-icon>
-        </ion-item-option>
         <ion-item-option color="danger" (click)="deleteRegistry()" slot="icon-only">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-item-option>
@@ -43,12 +35,6 @@
         </ion-label>
       </ion-item>
       <ion-item-options>
-        <ion-item-option color="primary" (click)="showDetails()" slot="icon-only">
-          <ion-icon name="glasses-outline"></ion-icon>
-        </ion-item-option>
-        <ion-item-option color="secondary" (click)="editRegistry()" slot="icon-only">
-          <ion-icon name="create-outline"></ion-icon>
-        </ion-item-option>
         <ion-item-option color="danger" (click)="deleteRegistry()" slot="icon-only">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-item-option>
@@ -63,12 +49,6 @@
         </ion-label>
       </ion-item>
       <ion-item-options>
-        <ion-item-option color="primary" (click)="showDetails(item)" slot="icon-only">
-          <ion-icon name="glasses-outline"></ion-icon>
-        </ion-item-option>
-        <ion-item-option color="secondary" (click)="editRegistry(item)" slot="icon-only">
-          <ion-icon name="create-outline"></ion-icon>
-        </ion-item-option>
         <ion-item-option color="danger" (click)="deleteRegistry(item)" slot="icon-only">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-item-option>

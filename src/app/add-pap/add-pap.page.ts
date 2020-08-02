@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-pap',
@@ -8,15 +9,18 @@ import { NavController } from '@ionic/angular';
 })
 export class AddPapPage implements OnInit {
 
+  formAddNewPAP: FormGroup;
 
-  date: Date;
-  holiday: boolean = false;
-  paymentStatus: string;
-  project: string;
-  papType: string;
-  papDescription: string;
-
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController, private fb: FormBuilder) {
+    this.formAddNewPAP = this.fb.group({
+      datetime: ['', Validators.required],
+      holiday: [null, Validators.required],
+      paymentStatus: ['', Validators.required],
+      project: ['', Validators.required],
+      papType: ['', Validators.required],
+      papDescription: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
   }
@@ -26,14 +30,26 @@ export class AddPapPage implements OnInit {
   }
 
   getHoliday(event: any) {
-    console.log(event.detail.checked);
-    if (event.detail.checked) {
-      this.holiday = true;
-    }
+    console.log(event);
+    this.formAddNewPAP.value.holiday = event.detail.checked;
   }
 
-  addNewPAP() {
-    console.log({ msg: 'Se añadio un nuevo PaP a tus registros' });
+  getDateTime(event: any) {
+    console.log(event.detail.value);
+    this.formAddNewPAP.value.datetime = event.detail.value;
+  }
+
+  addNewPAP(formAddNewPAP: FormGroup) {
+    console.log(formAddNewPAP);
+  }
+
+  formInputIsRequired(input: string) {
+    if (this.formAddNewPAP.controls[input]) {
+      if (this.formAddNewPAP.value.input === "" && this.formAddNewPAP.controls[input].hasError('required')) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

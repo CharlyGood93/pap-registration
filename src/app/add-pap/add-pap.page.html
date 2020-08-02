@@ -10,49 +10,69 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-list lines="none">
-    <ion-list-header>
-      <ion-label>Registra t&uacute; PaP</ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-label position="stacked">Fecha</ion-label>
-      <ion-datetime min="2020" max="2030" display-format="DD/MM/YYYY HH:mm" placeholder="Ingresa una fecha"
-        [(ngModel)]="date"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Feriado / Fin de semana</ion-label>
-      <ion-toggle color="secondary" (ionChange)="getHoliday($event)" [(ngModel)]="holiday"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Estado de pago</ion-label>
-      <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un estado de pago"
-        [(ngModel)]="paymentStatus">
-        <ion-select-option value="pendiente">Pendiente</ion-select-option>
-        <ion-select-option value="pagado">Pagado</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Proyecto</ion-label>
-      <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un proyecto"
-        [(ngModel)]="project">
-        <ion-select-option value="mplay">Registro Movistar Play</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Tipo PaP</ion-label>
-      <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un tipo de PaP"
-        [(ngModel)]="papType">
-        <ion-select-option value="incidencia">Incidencia</ion-select-option>
-        <ion-select-option value="mejoraContinua">Mejora Continua</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Descripci&oacute;n del PaP</ion-label>
-      <ion-textarea [(ngModel)]="papDescription" placeholder="Ingresa una descripci&oacute;n del PaP">
-      </ion-textarea>
-    </ion-item>
-  </ion-list>
-  <ion-button (click)="addNewPAP()" expand="block" shape="round" color="secondary" class="ion-margin">
-    A&ntilde;adir registro
-  </ion-button>
+  <form [formGroup]="formAddNewPAP" novalidate (ngSubmit)="addNewPAP(formAddNewPAP)">
+    <ion-list lines="full" class="ion-padding">
+      <ion-list-header>
+        <ion-label>Registra t&uacute; PaP</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label position="stacked">
+          Fecha
+          <ion-text *ngIf="formInputIsRequired('datetime')" color="danger">&#42;</ion-text>
+        </ion-label>
+        <ion-datetime min="2020" max="2030" display-format="DD/MM/YYYY HH:mm" placeholder="Ingresa una fecha"
+          formControlName="datetime" (ionChange)="getDateTime($event)"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          Feriado / Fin de semana
+          <ion-text *ngIf="formInputIsRequired('holiday')" color="danger">&#42;</ion-text>
+        </ion-label>
+        <ion-toggle color="secondary" (ionChange)="getHoliday($event)" formControlName="holiday"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">
+          Estado de pago
+          <ion-text *ngIf="formInputIsRequired('paymentStatus')" color="danger">&#42;</ion-text>
+        </ion-label>
+        <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un estado de pago"
+          formControlName="paymentStatus">
+          <ion-select-option value="pendiente">Pendiente</ion-select-option>
+          <ion-select-option value="pagado">Pagado</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">
+          Proyecto
+          <ion-text *ngIf="formInputIsRequired('project')" color="danger">&#42;</ion-text>
+        </ion-label>
+        <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un proyecto"
+          formControlName="project">
+          <ion-select-option value="mplay">Registro Movistar Play</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">
+          Tipo PaP
+          <ion-text *ngIf="formInputIsRequired('papType')" color="danger">&#42;</ion-text>
+        </ion-label>
+        <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un tipo de PaP"
+          formControlName="papType">
+          <ion-select-option value="incidencia">Incidencia</ion-select-option>
+          <ion-select-option value="mejoraContinua">Mejora Continua</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">
+          Descripci&oacute;n del PaP
+          <ion-text *ngIf="formInputIsRequired('papDescription')" color="danger">&#42;</ion-text>
+        </ion-label>
+        <ion-textarea formControlName="papDescription" placeholder="Ingresa una descripci&oacute;n del PaP">
+        </ion-textarea>
+      </ion-item>
+    </ion-list>
+    <ion-button (click)="addNewPAP(formAddNewPAP)" expand="block" shape="round" color="secondary" class="ion-margin">
+      A&ntilde;adir registro
+    </ion-button>
+  </form>
 </ion-content>
