@@ -37,7 +37,7 @@ export class LoginPage implements OnInit {
 
   loginFirebase(email: string, password: string) {
     firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
-      this.navCtrl.navigateForward(['/tabs/list']);
+      this.navCtrl.navigateForward(['/list-pap']);
     }).catch(async (err) => {
       const toast: any = await this.toatsCtrl.create({
         message: 'El usuario y/o password son incorrectos',
@@ -50,7 +50,7 @@ export class LoginPage implements OnInit {
 
   signupFirebase(email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
-      this.navCtrl.navigateForward(['/tabs/list']);
+      this.navCtrl.navigateForward(['/list-pap']);
     }).catch(async (err) => {
       const toast: any = await this.toatsCtrl.create({
         message: 'Error al crear la cuenta, reintalo m%&aacute;s tarde',
@@ -73,7 +73,7 @@ export class LoginPage implements OnInit {
   validateAuthState() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.navCtrl.navigateForward(['/tabs/list']);
+        this.navCtrl.navigateForward(['/list-pap']);
       }
     });
   }

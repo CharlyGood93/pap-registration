@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <form [formGroup]="formAddNewPAP" novalidate (ngSubmit)="addNewPAP(formAddNewPAP)">
+  <form [formGroup]="formAddNewPAP" novalidate>
     <ion-list lines="full" class="ion-padding">
       <ion-list-header>
         <ion-label>Registra t&uacute; PaP</ion-label>
@@ -21,14 +21,13 @@
           <ion-text *ngIf="formInputIsRequired('datetime')" color="danger">&#42;</ion-text>
         </ion-label>
         <ion-datetime min="2020" max="2030" display-format="DD/MM/YYYY HH:mm" placeholder="Ingresa una fecha"
-          formControlName="datetime" (ionChange)="getDateTime($event)"></ion-datetime>
+          formControlName="datetime"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>
           Feriado / Fin de semana
-          <ion-text *ngIf="formInputIsRequired('holiday')" color="danger">&#42;</ion-text>
         </ion-label>
-        <ion-toggle color="secondary" (ionChange)="getHoliday($event)" formControlName="holiday"></ion-toggle>
+        <ion-toggle color="secondary" formControlName="holiday"></ion-toggle>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">
@@ -37,8 +36,9 @@
         </ion-label>
         <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un estado de pago"
           formControlName="paymentStatus">
-          <ion-select-option value="pendiente">Pendiente</ion-select-option>
-          <ion-select-option value="pagado">Pagado</ion-select-option>
+          <ion-select-option *ngFor="let ps of chargeDataSelect.paymentStatus" value="{{ps.name}}">
+            {{ps.name}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
@@ -48,7 +48,7 @@
         </ion-label>
         <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un proyecto"
           formControlName="project">
-          <ion-select-option value="mplay">Registro Movistar Play</ion-select-option>
+          <ion-select-option *ngFor="let p of chargeDataSelect.project" value="{{p.name}}">{{p.name}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
@@ -58,8 +58,9 @@
         </ion-label>
         <ion-select value="notifications" interface="action-sheet" placeholder="Selecciona un tipo de PaP"
           formControlName="papType">
-          <ion-select-option value="incidencia">Incidencia</ion-select-option>
-          <ion-select-option value="mejoraContinua">Mejora Continua</ion-select-option>
+          <ion-select-option *ngFor="let pt of chargeDataSelect.papType" value="{{pt.name}}">
+            {{pt.name}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
@@ -71,7 +72,7 @@
         </ion-textarea>
       </ion-item>
     </ion-list>
-    <ion-button (click)="addNewPAP(formAddNewPAP)" expand="block" shape="round" color="secondary" class="ion-margin">
+    <ion-button [disabled]="!formAddNewPAP.valid" (click)="addNewPAP(formAddNewPAP)" expand="block" shape="round" color="secondary" class="ion-margin">
       A&ntilde;adir registro
     </ion-button>
   </form>
