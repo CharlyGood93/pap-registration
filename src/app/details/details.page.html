@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goToBack()" fill="clear" slot="icon-only">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Detalles del PaP</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-list lines="full">
+    <ion-list-header class="detail-header">
+      <ion-label>{{data.project}}</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label>
+              Fecha:
+              <ion-text color="primary">
+               {{data.datetime.seconds * 1000 | date: 'dd/MM/yyyy HH:mm:ss a'}}
+              </ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label>
+              Feriado / Fin de semana:
+              <ion-text color="primary">
+                {{data.holiday ? 'Si' : 'No'}}
+              </ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label>
+              Estado de pago:
+              <ion-text [color]="data.paymentStatus === 'Pagado' ? 'primary' : 'danger'">
+                {{data.paymentStatus}}
+              </ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label>
+              Tipo de PaP:
+              <ion-text color="primary">
+                {{data.papType}}
+              </ion-text>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-label>
+              Descripci&oacute;n del PaP:
+            </ion-label>
+          </ion-col>
+          <ion-col size="12">
+            <ion-text color="primary">
+              {{data.papDescription}}
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button (click)="goToBack()" expand="block" shape="round" color="secondary" class="ion-margin">
+          Volver
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

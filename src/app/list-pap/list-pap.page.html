@@ -16,13 +16,22 @@
       <ion-item>
         <ion-label [color]="registry.data().paymentStatus === 'Pagado' ? 'primary' : 'danger'">
           <h4>{{registry.data().project}}</h4>
-          <p>Fecha: {{getDate(registry.data().datetime)}}</p>
+          <p>Fecha: {{registry.data().datetime.seconds * 1000 | date: 'dd/MM/yyyy HH:mm:ss a'}}</p>
           <p>Estado de pago: {{registry.data().paymentStatus}}</p>
         </ion-label>
       </ion-item>
-      <ion-item-options>
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="viewDetails(registry.data())" slot="icon-only">
+          <ion-icon slot="top" name="eye-outline"></ion-icon>
+          Ver detalle
+        </ion-item-option>
+        <ion-item-option *ngIf="registry.data().paymentStatus !== 'Pagado'" color="secondary" (click)="updateRegistry(registry)" slot="icon-only">
+          <ion-icon slot="top" name="create-outline"></ion-icon>
+          Actualizar
+        </ion-item-option>
         <ion-item-option color="danger" (click)="deleteRegistry(registry)" slot="icon-only">
-          <ion-icon name="trash-outline"></ion-icon>
+          <ion-icon slot="top" name="trash-outline"></ion-icon>
+          Eliminar
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>

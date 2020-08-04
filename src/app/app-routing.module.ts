@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'list-pap',
     loadChildren: () => import('./list-pap/list-pap.module').then( m => m.ListPapPageModule)
   },
+  {
+    path: 'details',
+    loadChildren: () => import('./details/details.module').then( m => m.DetailsPageModule)
+  }
 ];
 
 @NgModule({
