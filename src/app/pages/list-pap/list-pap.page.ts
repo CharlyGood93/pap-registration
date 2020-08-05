@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastController, NavController, AlertController } from '@ionic/angular';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
+import { UtilsService } from '../../utils/utils.service';
 
 @Component({
   selector: 'app-list-pap',
@@ -10,26 +11,34 @@ import { Router } from '@angular/router';
 })
 export class ListPapPage implements OnInit {
 
-  owner: string = '0ECBzgT7raNPjUEUWk8DnhOFqo83';
+  owner: string = '';
   registries: any[] = [];
   db: any = firebase.firestore().collection('pap-registration');
   detail: string = '';
   notFound: boolean = false;
 
-  constructor(private navCtrl: NavController, private toastCtrl: ToastController, private alertCtrl: AlertController, private router: Router) {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.owner = user.uid;
-      }
-    });
-    this.getRegistries();
+  constructor(private navCtrl: NavController, private toastCtrl: ToastController, private alertCtrl: AlertController, private router: Router,
+    private utils: UtilsService) {
   }
 
   ngOnInit() {
-
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.owner = user.uid;
+    //   }
+    // });
+    let user = firebase.auth().currentUser;
+    // console.log({ user });
+    if (user != null) {
+      localStorage.setItem('owner', user.uid);
+      // this.owner = user.uid;
+      // console.log({ owner: this.owner });
+    }
+    this.getRegistries();
   }
 
   getRegistries() {
+    this.owner = localStorage.getItem('owner');
     const query = this.db.orderBy('paymentStatus', 'desc')
       .where('owner', '==', this.owner);
     query.onSnapshot(snap => {
@@ -38,6 +47,7 @@ export class ListPapPage implements OnInit {
   }
 
   logout() {
+    this.utils.generateLoading('Cerrando sesi&oacuten;n...');
     firebase.auth().signOut().then(() => {
       this.navCtrl.navigateRoot('/login');
     }).catch(async (err) => {

@@ -9,20 +9,24 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'add-pap',
-    loadChildren: () => import('./add-pap/add-pap.module').then( m => m.AddPapPageModule)
+    loadChildren: () => import('./pages/add-pap/add-pap.module').then( m => m.AddPapPageModule)
   },
   {
     path: 'list-pap',
-    loadChildren: () => import('./list-pap/list-pap.module').then( m => m.ListPapPageModule)
+    loadChildren: () => import('./pages/list-pap/list-pap.module').then( m => m.ListPapPageModule)
   },
   {
     path: 'details',
-    loadChildren: () => import('./details/details.module').then( m => m.DetailsPageModule)
+    loadChildren: () => import('./pages/details/details.module').then( m => m.DetailsPageModule)
+  },  {
+    path: 'footer',
+    loadChildren: () => import('./shared/footer/footer.module').then( m => m.FooterPageModule)
   }
+
 ];
 
 @NgModule({

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as firebase from 'firebase';
+import { UtilsService } from '../../utils/utils.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginPage implements OnInit {
 
   formSigninSignup: FormGroup;
 
-  constructor(private navCtrl: NavController, private toatsCtrl: ToastController, private fb: FormBuilder) {
+  constructor(private navCtrl: NavController, private toatsCtrl: ToastController, private fb: FormBuilder, private utils: UtilsService) {
     this.formSigninSignup = this.fb.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required]
@@ -36,6 +37,7 @@ export class LoginPage implements OnInit {
   }
 
   loginFirebase(email: string, password: string) {
+    this.utils.generateLoading('Iniciando sesi&oacute;n...');
     firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
       this.navCtrl.navigateForward(['/list-pap']);
     }).catch(async (err) => {
@@ -49,6 +51,7 @@ export class LoginPage implements OnInit {
   }
 
   signupFirebase(email: string, password: string) {
+    this.utils.generateLoading('Creando cuenta...');
     firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
       this.navCtrl.navigateForward(['/list-pap']);
     }).catch(async (err) => {
