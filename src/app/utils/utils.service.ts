@@ -41,11 +41,8 @@ export class UtilsService {
   }
 
   formatDatetime(datetime: any) {
-    console.log({ datetime });
     const convert = datetime * 1000;
-    console.log({ convert });
     const transform = this.datePipe.transform(convert, 'dd/MM/yyyy HH:mm:ss a');
-    console.log({ transform });
     return transform;
   }
 

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AddPapPageRoutingModule } from './add-pap-routing.module';
 
 import { AddPapPage } from './add-pap.page';
+import { FooterPage } from '../../shared/footer/footer.page';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { AddPapPage } from './add-pap.page';
     AddPapPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [AddPapPage]
+  declarations: [AddPapPage, FooterPage]
 })
 export class AddPapPageModule {}
