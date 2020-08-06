@@ -3,6 +3,7 @@ import { ToastController, NavController, AlertController } from '@ionic/angular'
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
 import { UtilsService } from '../../utils/utils.service';
+import { AuthFactoryService } from 'src/app/core/factory/auth-factory.service';
 
 @Component({
   selector: 'app-list-pap',
@@ -16,25 +17,30 @@ export class ListPapPage implements OnInit {
   db: any = firebase.firestore().collection('pap-registration');
   detail: string = '';
   notFound: boolean = false;
+  config: any;
 
   constructor(private navCtrl: NavController, private toastCtrl: ToastController, private alertCtrl: AlertController, private router: Router,
-    private utils: UtilsService) {
+    private utils: UtilsService, private authFactory: AuthFactoryService) {
   }
 
   ngOnInit() {
+    console.log(JSON.parse(localStorage.getItem('user')));
+    
+    // const user = this.utils.getSession('user');
+    // console.log(user);
     // firebase.auth().onAuthStateChanged((user) => {
     //   if (user) {
     //     this.owner = user.uid;
     //   }
     // });
-    let user = firebase.auth().currentUser;
+    // let user = firebase.auth().currentUser;
     // console.log({ user });
-    if (user != null) {
-      localStorage.setItem('owner', user.uid);
+    // if (user != null) {
+      // localStorage.setItem('owner', user.uid);
       // this.owner = user.uid;
       // console.log({ owner: this.owner });
-    }
-    this.getRegistries();
+    // }
+    // this.getRegistries();
   }
 
   getRegistries() {
@@ -46,18 +52,20 @@ export class ListPapPage implements OnInit {
     });
   }
 
-  logout() {
-    this.utils.generateLoading('Cerrando sesi&oacuten;n...');
-    firebase.auth().signOut().then(() => {
-      this.navCtrl.navigateRoot('/login');
-    }).catch(async (err) => {
-      const toast = await this.toastCtrl.create({
-        message: 'Error al cerrar sesi&oacute;n',
-        duration: 3000,
+  async logout() {
+    const logout = await this.authFactory.logout();
+    if (logout) {
+      this.utils.destroySession('user');
+      this.utils.generateLoading('Cerrando sesión...');
+      this.navCtrl.navigateRoot(['/login']);
+    } else {
+      this.config = {
+        message: 'Error al cerrar sesión',
+        duration: 2000,
         color: 'danger'
-      });
-      toast.present();
-    });
+      };
+      this.utils.generateToast(this.config);
+    }
   }
 
   async updateRegistry(registry: firebase.firestore.QueryDocumentSnapshot) {

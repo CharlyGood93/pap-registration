@@ -3,25 +3,29 @@ import { NavController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as firebase from 'firebase';
 import { UtilsService } from '../../utils/utils.service';
+import { AuthFactoryService } from '../../core/factory/auth-factory.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
+
 export class LoginPage implements OnInit {
 
   formSigninSignup: FormGroup;
+  config: any;
 
-  constructor(private navCtrl: NavController, private toatsCtrl: ToastController, private fb: FormBuilder, private utils: UtilsService) {
+  constructor(private navCtrl: NavController, private toatsCtrl: ToastController, private fb: FormBuilder,
+    private utils: UtilsService, private authFactory: AuthFactoryService) {
+  }
+
+  ngOnInit() {
     this.formSigninSignup = this.fb.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required]
     });
     this.validateAuthState();
-  }
-
-  ngOnInit() {
   }
 
   async signinSignup(fg: FormGroup, action: string) {
@@ -36,32 +40,34 @@ export class LoginPage implements OnInit {
     }
   }
 
-  loginFirebase(email: string, password: string) {
-    this.utils.generateLoading('Iniciando sesi&oacute;n...');
-    firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
+  async loginFirebase(email: string, password: string) {
+    const signin = await this.authFactory.signin(email, password);
+    if (signin) {
+      this.utils.generateLoading('Iniciando sesión...');
       this.navCtrl.navigateForward(['/list-pap']);
-    }).catch(async (err) => {
-      const toast: any = await this.toatsCtrl.create({
+    } else {
+      this.config = {
         message: 'El usuario y/o password son incorrectos',
-        duration: 5000,
+        duration: 2000,
         color: 'danger'
-      });
-      toast.present();
-    });
+      }
+      this.utils.generateToast(this.config);
+    }
   }
 
-  signupFirebase(email: string, password: string) {
-    this.utils.generateLoading('Creando cuenta...');
-    firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+  async signupFirebase(email: string, password: string) {
+    const signup = await this.authFactory.signup(email, password);
+    if (signup) {
+      this.utils.generateLoading('Creando cuenta...');
       this.navCtrl.navigateForward(['/list-pap']);
-    }).catch(async (err) => {
-      const toast: any = await this.toatsCtrl.create({
-        message: 'Error al crear la cuenta, reintalo m%&aacute;s tarde',
-        duration: 5000,
+    } else {
+      this.config = {
+        message: 'Error al crear la cuenta, reintalo más tarde',
+        duration: 2000,
         color: 'danger'
-      });
-      toast.present();
-    });
+      }
+      this.utils.generateToast(this.config);
+    }
   }
 
   formInputIsRequired(input: string) {
@@ -74,11 +80,18 @@ export class LoginPage implements OnInit {
   }
 
   validateAuthState() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.navCtrl.navigateForward(['/list-pap']);
-      }
-    });
+    // const user = localStorage.getItem('user');
+    // console.log(user);
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.navCtrl.navigateForward(['/list-pap']);
+    //   }
+    // });
+    const user = this.utils.getSession('user');
+    console.log(user);
+    if (user !== null) {
+      this.navCtrl.navigateForward(['/list-pap']);
+    }
   }
 
 }
