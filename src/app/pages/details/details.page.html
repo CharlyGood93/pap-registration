@@ -21,7 +21,7 @@
             <ion-label>
               Fecha:
               <ion-text color="primary">
-               {{data.datetime.seconds * 1000 | date: 'dd/MM/yyyy HH:mm:ss a'}}
+               {{formatDatetime(data.datetime.seconds)}}
               </ion-text>
             </ion-label>
           </ion-col>

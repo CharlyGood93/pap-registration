@@ -25,7 +25,7 @@ export class ListPapPage implements OnInit {
 
   ngOnInit() {
     console.log(JSON.parse(localStorage.getItem('user')));
-    
+
     // const user = this.utils.getSession('user');
     // console.log(user);
     // firebase.auth().onAuthStateChanged((user) => {
@@ -33,14 +33,14 @@ export class ListPapPage implements OnInit {
     //     this.owner = user.uid;
     //   }
     // });
-    // let user = firebase.auth().currentUser;
+    let user = firebase.auth().currentUser;
     // console.log({ user });
-    // if (user != null) {
-      // localStorage.setItem('owner', user.uid);
-      // this.owner = user.uid;
-      // console.log({ owner: this.owner });
-    // }
-    // this.getRegistries();
+    if (user != null) {
+      localStorage.setItem('owner', user.uid);
+      this.owner = user.uid;
+      console.log({ owner: this.owner });
+    }
+    this.getRegistries();
   }
 
   getRegistries() {
@@ -168,6 +168,10 @@ export class ListPapPage implements OnInit {
 
   viewDetails(registry: firebase.firestore.QueryDocumentSnapshot) {
     this.navCtrl.navigateForward(['/details'], { state: registry });
+  }
+
+  formatDatetime(datetime: any) {
+    return this.utils.formatDatetime(datetime);
   }
 
 }

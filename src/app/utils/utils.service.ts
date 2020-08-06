@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastController, LoadingController } from '@ionic/angular';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { ToastController, LoadingController } from '@ionic/angular';
 
 export class UtilsService {
 
-  constructor(private toastCtrl: ToastController, private loadingCtrl: LoadingController) { }
+  constructor(private toastCtrl: ToastController, private loadingCtrl: LoadingController, private datePipe: DatePipe) { }
 
   async generateToast(config: any) {
     const toast = await this.toastCtrl.create({
@@ -37,6 +38,15 @@ export class UtilsService {
 
   destroySession(key) {
     return localStorage.removeItem(key);
+  }
+
+  formatDatetime(datetime: any) {
+    console.log({ datetime });
+    const convert = datetime * 1000;
+    console.log({ convert });
+    const transform = this.datePipe.transform(convert, 'dd/MM/yyyy HH:mm:ss a');
+    console.log({ transform });
+    return transform;
   }
 
 }

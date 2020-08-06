@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import * as firebase from 'firebase';
-import { Timestamp } from 'rxjs';
+import { UtilsService } from '../../utils/utils.service';
 
 @Component({
   selector: 'app-details',
@@ -13,7 +12,7 @@ export class DetailsPage implements OnInit {
 
   data: any;
 
-  constructor(private router: Router, private navCtrl: NavController) {
+  constructor(private router: Router, private navCtrl: NavController, private utils: UtilsService) {
     if (this.router.getCurrentNavigation().extras.state) {
       let data: any = this.router.getCurrentNavigation().extras.state;
       localStorage.setItem('data', JSON.stringify(data));
@@ -27,6 +26,10 @@ export class DetailsPage implements OnInit {
 
   goToBack() {
     this.navCtrl.navigateBack(['/list-pap']);
+  }
+
+  formatDatetime(datetime: any) {
+    return this.utils.formatDatetime(datetime);
   }
 
 }

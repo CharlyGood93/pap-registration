@@ -16,7 +16,7 @@
       <ion-item>
         <ion-label [color]="registry.data().paymentStatus === 'Pagado' ? 'primary' : 'danger'">
           <h4>{{registry.data().project}}</h4>
-          <p>Fecha: {{registry.data().datetime.seconds * 1000 | date: 'dd/MM/yyyy HH:mm:ss a'}}</p>
+          <p>Fecha: {{formatDatetime(registry.data().datetime.seconds)}}</p>
           <p>Estado de pago: {{registry.data().paymentStatus}}</p>
         </ion-label>
       </ion-item>

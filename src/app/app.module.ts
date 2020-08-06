@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import * as firebase from 'firebase/app';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 firebase.initializeApp({
   apiKey: "AIzaSyC9laqFvej2Rsfkivw8uSQb5RE6n_eIBJY",
@@ -30,6 +31,7 @@ firebase.initializeApp({
   providers: [
     StatusBar,
     SplashScreen,
+    DatePipe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
