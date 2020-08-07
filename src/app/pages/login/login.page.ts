@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as firebase from 'firebase';
 import { UtilsService } from '../../utils/utils.service';
 import { AuthFactoryService } from '../../core/factory/auth-factory.service';
 
@@ -79,17 +78,9 @@ export class LoginPage implements OnInit {
     return false;
   }
 
-  validateAuthState() {
-    // const user = localStorage.getItem('user');
-    // console.log(user);
-    // firebase.auth().onAuthStateChanged((user) => {
-    //   if (user) {
-    //     this.navCtrl.navigateForward(['/list-pap']);
-    //   }
-    // });
-    const user = this.utils.getSession('user');
-    console.log(user);
-    if (user !== null) {
+  async validateAuthState() {
+    const authState = this.utils.validateAuthState();
+    if (authState) {
       this.navCtrl.navigateForward(['/list-pap']);
     }
   }

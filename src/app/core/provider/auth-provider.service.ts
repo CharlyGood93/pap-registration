@@ -11,63 +11,61 @@ export class AuthProviderService {
   constructor() { }
 
   async signin(email: string, password: string) {
+    let user: any;
     try {
       const signin = await firebase.auth().signInWithEmailAndPassword(email, password);
-      this.resp = {
-        code: 0,
-        desc: 'Logged in',
-        user: signin.user
-      };
+      user = signin.user;
     } catch (error) {
-      this.resp = {
-        code: 1,
-        desc: 'User or password incorrect',
-        user: null
-      };
+      user = null
     }
-    return this.resp;
+    return user;
   }
 
   async signup(email: string, password: string) {
-    const signup = await firebase.auth().createUserWithEmailAndPassword(email, password);
-    console.log(signup);
+    let user: any;
     try {
-      console.log({ msg: 'signup ok' });
-      this.resp = {
-        code: 0,
-        desc: 'User created',
-        user: signup.user
-      };
+      const signup = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      user = signup.user;
     } catch (error) {
-      console.log({ msg: 'signup nok' });
-      this.resp = {
-        code: 1,
-        desc: 'Error to create a new user',
-        user: null
-      };
+      user = null;
     }
-    return this.resp;
+    return user;
   }
 
   async logout() {
+    let logout: any;
     try {
-      await firebase.auth().signOut();
-      console.log(firebase.auth().signOut());
-      this.resp = {
-        code: 0,
-        desc: 'Logged out'
-      };
+      const signout = await firebase.auth().signOut();
+      logout = signout;
     } catch (error) {
-      this.resp = {
-        code: 1,
-        desc: 'Error to logged out'
-      };
+      logout = null;
     }
-    return this.resp;
+    return logout;
+    // try {
+    //   await firebase.auth().signOut();
+    //   console.log(firebase.auth().signOut());
+    //   this.resp = {
+    //     code: 0,
+    //     desc: 'Logged out'
+    //   };
+    // } catch (error) {
+    //   this.resp = {
+    //     code: 1,
+    //     desc: 'Error to logged out'
+    //   };
+    // }
+    // return this.resp;
   }
 
-  async authState() {
-
+  async authState(user: any) {
+    let auth: any;
+    try {
+      const state = firebase.auth().onAuthStateChanged(user);
+      auth = state;
+    } catch (error) {
+      auth = null;
+    }
+    return auth;
   }
 
 }

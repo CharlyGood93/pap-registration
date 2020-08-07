@@ -14,8 +14,9 @@ export class AuthFactoryService {
 
   async signin(email: string, password: string) {
     const signin = await this.authProvider.signin(email, password);
-    if (signin.code === 0) {
-      this.utils.setSession('user', signin.user);
+    console.log(signin);
+    if (signin !== null) {
+      this.utils.setSession('user', signin);
       this.status = true;
     }
     return this.status;
@@ -23,17 +24,27 @@ export class AuthFactoryService {
 
   async signup(email: string, password: string) {
     const signup = await this.authProvider.signup(email, password);
-    console.log({ signup });
-    if (signup.code === 0) {
-      this.utils.setSession('user', signup.user);
+    console.log(signup);
+    if (signup !== null) {
+      this.utils.setSession('user', signup);
       this.status = true;
     }
     return this.status;
   }
 
   async logout() {
-    const logout = await this.authProvider.logout();
-    if (logout) {
+    const signout = await this.authProvider.logout();
+    console.log(signout);
+    if (signout !== null) {
+      this.utils.destroySession('user');
+      this.status = true;
+    }
+    return this.status;
+  }
+
+  async authState(user: any) {
+    const state = await this.authProvider.authState(user);
+    if (state !== null) {
       this.status = true;
     }
     return this.status;

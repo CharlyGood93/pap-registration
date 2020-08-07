@@ -55,7 +55,6 @@ export class ListPapPage implements OnInit {
   async logout() {
     const logout = await this.authFactory.logout();
     if (logout) {
-      this.utils.destroySession('user');
       this.utils.generateLoading('Cerrando sesión...');
       this.navCtrl.navigateRoot(['/login']);
     } else {

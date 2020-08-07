@@ -46,4 +46,14 @@ export class UtilsService {
     return transform;
   }
 
+  validateAuthState() {
+    let status: boolean = false;
+    const auth = this.getSession('user');
+    console.log(auth);
+    if (auth) {
+      status = true;
+    }
+    return status;
+  }
+
 }
