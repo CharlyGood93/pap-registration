@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as firebase from 'firebase';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-pap',
@@ -26,7 +27,7 @@ export class AddPapPage implements OnInit {
   };
   owner: string = '';
 
-  constructor(private navCtrl: NavController, private fb: FormBuilder, private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, private fb: FormBuilder, private toastCtrl: ToastController, private router: Router) {
     this.formAddNewPAP = this.fb.group({
       datetime: ['', Validators.required],
       holiday: [null],
@@ -72,7 +73,7 @@ export class AddPapPage implements OnInit {
         color: 'primary'
       });
       toast.present();
-      this.navCtrl.navigateBack(['/list-pap']);
+      this.router.navigate(['/list-pap']);
     }).catch(async (err) => {
       toast = await this.toastCtrl.create({
         message: err.message,

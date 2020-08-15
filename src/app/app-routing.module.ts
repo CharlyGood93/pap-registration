@@ -25,6 +25,10 @@ const routes: Routes = [
   },  {
     path: 'footer',
     loadChildren: () => import('./shared/footer/footer.module').then( m => m.FooterPageModule)
+  },
+  {
+    path: 'header',
+    loadChildren: () => import('./shared/header/header.module').then( m => m.HeaderPageModule)
   }
 
 ];

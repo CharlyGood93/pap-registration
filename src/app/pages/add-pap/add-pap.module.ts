@@ -8,6 +8,7 @@ import { AddPapPageRoutingModule } from './add-pap-routing.module';
 
 import { AddPapPage } from './add-pap.page';
 import { FooterPage } from '../../shared/footer/footer.page';
+import { HeaderPage } from '../../shared/header/header.page';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { FooterPage } from '../../shared/footer/footer.page';
     AddPapPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [AddPapPage, FooterPage]
+  declarations: [AddPapPage, HeaderPage, FooterPage]
 })
 export class AddPapPageModule {}

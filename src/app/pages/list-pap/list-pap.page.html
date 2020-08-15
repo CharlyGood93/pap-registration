@@ -10,22 +10,29 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-searchbar (ionChange)="search($event)"></ion-searchbar>
   <ion-list lines="full">
+    <ion-item>
+      <ion-label>Filtrar por</ion-label>
+      <ion-select interface="action-sheet" (ionChange)="getFilter($event)" placeholder="Selecciona">
+        <ion-select-option *ngFor="let opt of filterOptions" value="{{opt.name}}">{{opt.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
     <ion-item-sliding *ngFor="let registry of registries">
       <ion-item>
-        <ion-label [color]="registry.data().paymentStatus === 'Pagado' ? 'primary' : 'danger'">
-          <h4>{{registry.data().project}}</h4>
-          <p>Fecha: {{formatDatetime(registry.data().datetime.seconds)}}</p>
-          <p>Estado de pago: {{registry.data().paymentStatus}}</p>
+        <ion-label [color]="registry.paymentStatus === 'Pagado' ? 'primary' : 'danger'">
+          <h4>{{registry.project}}</h4>
+          <p>Fecha: {{formatDatetime(registry.datetime.seconds)}}</p>
+          <p>Feriado: {{registry.holiday ? 'Si': 'No'}}</p>
+          <p>Estado de pago: {{registry.paymentStatus}}</p>
         </ion-label>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option color="primary" (click)="viewDetails(registry.data())" slot="icon-only">
+        <ion-item-option color="primary" (click)="viewDetails(registry)" slot="icon-only">
           <ion-icon slot="top" name="eye-outline"></ion-icon>
           Ver detalle
         </ion-item-option>
-        <ion-item-option *ngIf="registry.data().paymentStatus !== 'Pagado'" color="secondary" (click)="updateRegistry(registry)" slot="icon-only">
+        <ion-item-option *ngIf="registry.paymentStatus !== 'Pagado'" color="secondary"
+          (click)="updateRegistry(registry)" slot="icon-only">
           <ion-icon slot="top" name="create-outline"></ion-icon>
           Actualizar
         </ion-item-option>

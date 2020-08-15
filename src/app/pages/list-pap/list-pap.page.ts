@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import { Router } from '@angular/router';
 import { UtilsService } from '../../utils/utils.service';
 import { AuthFactoryService } from 'src/app/core/factory/auth-factory.service';
+import { RegistryFactoryService } from '../../core/factory/registry-factory.service';
 
 @Component({
   selector: 'app-list-pap',
@@ -18,38 +19,30 @@ export class ListPapPage implements OnInit {
   detail: string = '';
   notFound: boolean = false;
   config: any;
+  filterOptions: any[] = [
+    { name: 'Pendiente' },
+    { name: 'Pagado' },
+    { name: 'Feriado' },
+    { name: 'Todos' },
+  ];
 
   constructor(private navCtrl: NavController, private toastCtrl: ToastController, private alertCtrl: AlertController, private router: Router,
-    private utils: UtilsService, private authFactory: AuthFactoryService) {
+    private utils: UtilsService, private authFactory: AuthFactoryService, private registryFactory: RegistryFactoryService) {
+      console.log('construct');
   }
 
   ngOnInit() {
-    console.log(JSON.parse(localStorage.getItem('user')));
-
-    // const user = this.utils.getSession('user');
-    // console.log(user);
-    // firebase.auth().onAuthStateChanged((user) => {
-    //   if (user) {
-    //     this.owner = user.uid;
-    //   }
-    // });
-    let user = firebase.auth().currentUser;
-    // console.log({ user });
-    if (user != null) {
-      localStorage.setItem('owner', user.uid);
-      this.owner = user.uid;
-      console.log({ owner: this.owner });
-    }
+    console.log('oninit');
     this.getRegistries();
   }
 
-  getRegistries() {
+  ionViewWillEnter() {
+    this.getRegistries();
+  }
+  
+  async getRegistries() {
     this.owner = localStorage.getItem('owner');
-    const query = this.db.orderBy('paymentStatus', 'desc')
-      .where('owner', '==', this.owner);
-    query.onSnapshot(snap => {
-      this.registries = snap.docs;
-    });
+    this.registries = await this.registryFactory.getRegistries(this.owner);
   }
 
   async logout() {
@@ -64,6 +57,16 @@ export class ListPapPage implements OnInit {
         color: 'danger'
       };
       this.utils.generateToast(this.config);
+    }
+  }
+
+  async getFilter(event: any) {
+    this.owner = localStorage.getItem('owner');
+    const filter = event.detail.value;
+    if (filter === 'Todos') {
+      this.getRegistries();
+    } else {
+      this.registries = await this.registryFactory.getRegistriesByFilter(this.owner, filter);
     }
   }
 
@@ -146,20 +149,20 @@ export class ListPapPage implements OnInit {
     await deleteAlert.present();
   }
 
-  search(event: any) {
-    this.registries = [];
-    this.detail = event.detail.value;
-    this.detail = this.detail.substring(0, 1).toUpperCase() + this.detail.substring(1);
-    console.log({ detail: this.detail });
-    if (this.detail !== '') {
-      const query = this.db
-        .where('owner', '==', this.owner)
-        .where('paymentStatus', '==', this.detail);
-      query.onSnapshot(snap => {
-        this.registries = snap.docs;
-      });
-    }
-  }
+  // search(event: any) {
+  //   this.registries = [];
+  //   this.detail = event.detail.value;
+  //   this.detail = this.detail.substring(0, 1).toUpperCase() + this.detail.substring(1);
+  //   console.log({ detail: this.detail });
+  //   if (this.detail !== '') {
+  //     const query = this.db
+  //       .where('owner', '==', this.owner)
+  //       .where('paymentStatus', '==', this.detail);
+  //     query.onSnapshot(snap => {
+  //       this.registries = snap.docs;
+  //     });
+  //   }
+  // }
 
   addNewPAP() {
     this.navCtrl.navigateForward(['/add-pap']);

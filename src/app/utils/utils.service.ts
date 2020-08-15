@@ -56,4 +56,26 @@ export class UtilsService {
     return status;
   }
 
+  getDataFilter(filter: string) {
+    let data: any = {
+      column: '',
+      value: ''
+    };
+    switch (filter) {
+      case 'Pagado':
+        data.column = 'paymentStatus';
+        data.value = filter;
+        break;
+      case 'Pendiente':
+        data.column = 'paymentStatus';
+        data.value = filter;
+        break;
+      case 'Feriado':
+        data.column = 'holiday';
+        data.value = true;
+        break;
+    }
+    return data;
+  }
+
 }

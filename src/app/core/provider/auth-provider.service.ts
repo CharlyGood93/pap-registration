@@ -6,8 +6,6 @@ import * as firebase from 'firebase';
 })
 export class AuthProviderService {
 
-  resp: any;
-
   constructor() { }
 
   async signin(email: string, password: string) {
@@ -41,20 +39,6 @@ export class AuthProviderService {
       logout = null;
     }
     return logout;
-    // try {
-    //   await firebase.auth().signOut();
-    //   console.log(firebase.auth().signOut());
-    //   this.resp = {
-    //     code: 0,
-    //     desc: 'Logged out'
-    //   };
-    // } catch (error) {
-    //   this.resp = {
-    //     code: 1,
-    //     desc: 'Error to logged out'
-    //   };
-    // }
-    // return this.resp;
   }
 
   async authState(user: any) {

@@ -8,6 +8,7 @@ import { ListPapPageRoutingModule } from './list-pap-routing.module';
 
 import { ListPapPage } from './list-pap.page';
 import { FooterPage } from 'src/app/shared/footer/footer.page';
+import { HeaderPage } from '../../shared/header/header.page';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { FooterPage } from 'src/app/shared/footer/footer.page';
     IonicModule,
     ListPapPageRoutingModule
   ],
-  declarations: [ListPapPage, FooterPage]
+  declarations: [ListPapPage, HeaderPage, FooterPage]
 })
 export class ListPapPageModule {}
