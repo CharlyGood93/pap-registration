@@ -149,21 +149,6 @@ export class ListPapPage implements OnInit {
     await deleteAlert.present();
   }
 
-  // search(event: any) {
-  //   this.registries = [];
-  //   this.detail = event.detail.value;
-  //   this.detail = this.detail.substring(0, 1).toUpperCase() + this.detail.substring(1);
-  //   console.log({ detail: this.detail });
-  //   if (this.detail !== '') {
-  //     const query = this.db
-  //       .where('owner', '==', this.owner)
-  //       .where('paymentStatus', '==', this.detail);
-  //     query.onSnapshot(snap => {
-  //       this.registries = snap.docs;
-  //     });
-  //   }
-  // }
-
   addNewPAP() {
     this.navCtrl.navigateForward(['/add-pap']);
   }
