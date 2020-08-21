@@ -32,4 +32,12 @@ export class RegistryFactoryService {
     return dataByFilter;
   }
 
+  async addRegistry(data: any, owner: string) {
+    if (data.holiday === null) {
+      data.holiday = false;
+    }
+    const registry = await this.registryProvider.addRegistry(data, owner);
+    return registry;
+  }
+
 }

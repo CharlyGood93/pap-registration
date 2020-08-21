@@ -3,6 +3,8 @@ import { NavController, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
+import { UtilsService } from '../../utils/utils.service';
+import { RegistryFactoryService } from '../../core/factory/registry-factory.service';
 
 @Component({
   selector: 'app-add-pap',
@@ -26,8 +28,10 @@ export class AddPapPage implements OnInit {
     ]
   };
   owner: string = '';
+  config: any;
 
-  constructor(private navCtrl: NavController, private fb: FormBuilder, private toastCtrl: ToastController, private router: Router) {
+  constructor(private navCtrl: NavController, private fb: FormBuilder, private toastCtrl: ToastController,
+    private router: Router, private utils: UtilsService, private registryFactory: RegistryFactoryService) {
     this.formAddNewPAP = this.fb.group({
       datetime: ['', Validators.required],
       holiday: [null],
@@ -36,15 +40,11 @@ export class AddPapPage implements OnInit {
       papType: ['', Validators.required],
       papDescription: ['', Validators.required],
     });
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.owner = user.uid;
-      }
-    });
   }
 
   ngOnInit() {
-
+    this.owner = localStorage.getItem('owner');
+    console.log({ owner: this.owner });
   }
 
   goToBack() {
@@ -53,35 +53,22 @@ export class AddPapPage implements OnInit {
 
   async addNewPAP(formAddNewPAP: FormGroup) {
     const data = formAddNewPAP.value;
-    let toast: any;
-    if (data.holiday === null) {
-      data.holiday = false;
-    }
-    console.log(data);
-    firebase.firestore().collection('pap-registration').add({
-      datetime: new Date(data.datetime),
-      holiday: data.holiday,
-      paymentStatus: data.paymentStatus,
-      project: data.project,
-      papType: data.papType,
-      papDescription: data.papDescription,
-      owner: this.owner
-    }).then(async (docRef) => {
-      toast = await this.toastCtrl.create({
+    const registry = this.registryFactory.addRegistry(data, this.owner);
+    if (registry) {
+      this.config = {
         message: 'Nuevo PAP Registrado con &eacute;xito',
-        duration: 3000,
+        duration: 2000,
         color: 'primary'
-      });
-      toast.present();
-      this.router.navigate(['/list-pap']);
-    }).catch(async (err) => {
-      toast = await this.toastCtrl.create({
-        message: err.message,
-        duration: 3000,
+      };
+    } else {
+      this.config = {
+        message: 'Error al a&ntilde;adir un nuevo registro',
+        duration: 2000,
         color: 'danger'
-      });
-      toast.present();
-    });
+      };
+    }
+    this.utils.generateToast(this.config);
+    this.router.navigate(['/list-pap']);
   }
 
   formInputIsRequired(input: string) {
@@ -92,5 +79,5 @@ export class AddPapPage implements OnInit {
     }
     return false;
   }
-  
+
 }

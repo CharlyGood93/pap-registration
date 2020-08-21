@@ -34,4 +34,22 @@ export class RegistryProviderService {
     return dataByFilter;
   }
 
+  async addRegistry(data: any, owner: string) {
+    let status;
+    const registry: any = await this.registry.add({
+      datetime: new Date(data.datetime),
+      holiday: data.holiday,
+      paymentStatus: data.paymentStatus,
+      project: data.project,
+      papType: data.papType,
+      papDescription: data.papDescription,
+      owner
+    }).then((doc) => {
+      status = true;
+    }).catch((err) => {
+      status = false;
+    });
+    return status;
+  }
+
 }
